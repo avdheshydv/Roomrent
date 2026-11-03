@@ -1,4 +1,4 @@
-const User = require("../model/User");
+const User = require("../models/User");
 
 // Helper function: User create/login hone par JWT token generate karke response bhejna
 const sendTokenResponse = (user, statusCode, res) => {
@@ -106,3 +106,23 @@ exports.login = async (req, res) => {
     });
   }
 };
+
+// @desc    Get current logged in user
+// @route   GET /api/auth/me
+// @access  Private
+exports.getMe = async (req, res) => {
+  try {
+    const user = req.user || (await User.findById(req.user?._id || req.user?.id).select("-password"));
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.error("GetMe Error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Server error",
+    });
+  }
+};
+
