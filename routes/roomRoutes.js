@@ -1,16 +1,28 @@
 const express = require("express");
 const router = express.Router();
 
-const { createRoom, getAllRooms } = require("../controller/roomController");
+const {
+  createRoom,
+  getAllRooms,
+  getSingleRoom,
+  updateRoom,
+  deleteRoom,
+} = require("../controller/roomController");
+
 const { protect } = require("../middleware/authMiddleware");
 const { authorize } = require("../middleware/roleMiddleware");
 
-// @route   GET /api/rooms
-// @desc    Get all available rooms (Public for students/tenants)
-router.get("/", getAllRooms);
+// Collection routes: /api/rooms
+router
+  .route("/")
+  .get(getAllRooms)
+  .post(protect, authorize("owner", "admin"), createRoom);
 
-// @route   POST /api/rooms
-// @desc    Create a new room listing (Private - Owner only)
-router.post("/", protect, authorize("owner"), createRoom);
+// Single item routes: /api/rooms/:id
+router
+  .route("/:id")
+  .get(getSingleRoom)
+  .put(protect, authorize("owner", "admin"), updateRoom)
+  .delete(protect, authorize("owner", "admin"), deleteRoom);
 
 module.exports = router;
