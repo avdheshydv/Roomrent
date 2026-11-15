@@ -3,6 +3,9 @@ const cors = require("cors");
 
 // Routes import
 const authRoutes = require("./routes/authRoutes");
+// Upar imports ke sath ye line jodo:
+const roomRoutes = require('./routes/roomRoutes');
+
 
 const app = express();
 
@@ -21,5 +24,7 @@ app.get("/", (req, res) => {
 
 // Mount Routes
 app.use("/api/auth", authRoutes);
+// Neeche jahan app.use('/api/auth', ...) likha hai, uske neeche ye line jodo:
+app.use('/api/rooms', roomRoutes);
 
 module.exports = app;
