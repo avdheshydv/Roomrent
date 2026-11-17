@@ -39,6 +39,8 @@ const userSchema = new mongoose.Schema(
         message: "Role must be either tenant, owner, or admin",
       },
       default: "tenant",
+      lowercase: true,
+      trim: true,
     },
     avatar: {
       type: String,

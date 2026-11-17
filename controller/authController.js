@@ -116,6 +116,7 @@ exports.getMe = async (req, res) => {
     res.status(200).json({
       success: true,
       user,
+      tokenSnippet: req.token ? `${req.token.substring(0, 15)}...${req.token.substring(req.token.length - 10)}` : undefined,
     });
   } catch (error) {
     console.error("GetMe Error:", error);
